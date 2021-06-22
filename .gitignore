@@ -2,6 +2,11 @@
 __pycache__/
 *.py[cod]
 *$py.class
+.idea/
+.vagrant/
+mysql-apt-config_0.8.15-1_all.deb
+bionic64.box
+Vagrantfile
 
 # C extensions
 *.so
