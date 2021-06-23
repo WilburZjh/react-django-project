@@ -6,7 +6,7 @@ __pycache__/
 .vagrant/
 mysql-apt-config_0.8.15-1_all.deb
 bionic64.box
-Vagrantfile
+#Vagrantfile
 
 # C extensions
 *.so
