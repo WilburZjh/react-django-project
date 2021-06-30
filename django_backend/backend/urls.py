@@ -17,11 +17,15 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from todo.api.views import TodoViewSet
+from accounts.api.views import UserViewSet, AccountViewSet
 
 router = routers.DefaultRouter()
-router.register('api/todo', TodoViewSet, basename='todoviewset')
+router.register(r'api/user', UserViewSet)
+router.register(r'api/accounts', AccountViewSet, basename='accounts')
+router.register(r'api/todo', TodoViewSet, basename='todo')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls'))
 ]
