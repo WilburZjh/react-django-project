@@ -14,7 +14,7 @@ from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -40,9 +40,6 @@ INSTALLED_APPS = [
 
     'corsheaders',
     'rest_framework',
-
-    'accounts',
-    'todo',
 ]
 
 REST_FRAMEWORK = {
@@ -66,12 +63,13 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 ROOT_URLCONF = 'backend.urls'
+# VAGRANT_DIR = os.path.abspath(os.path.join(os.getcwd(), "../.."))
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(os.path.abspath(os.path.join(os.getcwd(), "../..")), "react_frontend/build")
+            os.path.join(BASE_DIR, 'react_frontend/build'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -140,3 +138,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'react_frontend/build/static'),
+]
