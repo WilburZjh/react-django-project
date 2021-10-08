@@ -17,12 +17,15 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from django.views.generic import TemplateView
+from accounts.api.views import UserViewSet, AccountViewSet
 
 router = routers.DefaultRouter()
+router.register('api/users', UserViewSet)
+router.register('api/accounts', AccountViewSet, basename='accounts')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='index.html')),
-    # path('', include(router.urls)),
-    # path('api-auth/', include('rest_framework.urls'))
+    path('', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls'))
 ]
