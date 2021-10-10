@@ -30,7 +30,14 @@ class AccountViewSet(viewsets.ViewSet):
             }, status=400)
 
         username = serializer.validated_data['username']
+        if not User.objects.filter(username = username).exists():
+            return Response({
+                "Success": False,
+                "Message": "User does not exist."
+            }, 400)
+
         password = serializer.validated_data['password']
+
         user = django_authenticate(request, username=username, password=password)
         if not user or user.is_anonymous:
             return Response({
@@ -46,7 +53,7 @@ class AccountViewSet(viewsets.ViewSet):
 
     @action(methods=['GET'], detail=False)
     def check_status(self, request):
-        data={'has_logged_in': request.user.is_authenticated}
+        data={'Has_logged_in': request.user.is_authenticated}
         if request.user.is_authenticated:
             data['user'] = UserSerializer(request.user).data
         return Response(data)
@@ -71,8 +78,13 @@ class AccountViewSet(viewsets.ViewSet):
 
     @action(methods=['POST'], detail=False)
     def logout(self, request):
-        django_logout(request)
+        if request.user.is_authenticated:
+            django_logout(request)
+            return Response({
+                "Logged out": True,
+                "Message": "You have successfully logged out."
+            }, 200)
         return Response({
-            "Logged out": True,
-            "Message": "You have successfully logged out."
-        }, 200)
+            "Logged out": False,
+            "Message": "You need to log in before log out."
+        }, 400)
