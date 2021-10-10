@@ -5,7 +5,7 @@ from utils.mydecorator import verify_input
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'email')
+        fields = ('id', 'username', 'email')
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
@@ -18,7 +18,7 @@ class SignupSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         username = validated_data['username'].lower()
-        password = validated_data['password'].lower()
+        password = validated_data['password']
         email = validated_data['email'].lower()
 
         user = User.objects.create_user(
