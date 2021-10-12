@@ -7,6 +7,11 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'username', 'email')
 
+class UserSerializerForTweet(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username')
+
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
@@ -15,6 +20,10 @@ class SignupSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=20)
     password = serializers.CharField(max_length=20)
     email = serializers.EmailField()
+
+    class Meta:
+        model = User
+        fields = ('username', 'password', 'email')
 
     def create(self, validated_data):
         username = validated_data['username'].lower()

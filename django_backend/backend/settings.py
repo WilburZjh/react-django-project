@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 
     'corsheaders',
     'rest_framework',
+    'accounts',
+    'tweets',
 ]
 
 REST_FRAMEWORK = {
