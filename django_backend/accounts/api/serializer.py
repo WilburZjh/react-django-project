@@ -19,6 +19,7 @@ class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
 
+
 class SignupSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=20)
     password = serializers.CharField(max_length=20)
@@ -29,6 +30,7 @@ class SignupSerializer(serializers.Serializer):
         fields = ('username', 'password', 'email')
 
     def create(self, validated_data):
+        # print(validated_data)
         username = validated_data['username'].lower()
         password = validated_data['password']
         email = validated_data['email'].lower()
@@ -41,8 +43,9 @@ class SignupSerializer(serializers.Serializer):
 
         return user
 
-    @verify_input
+    # @verify_input
     def validate(self, attrs):
+        print(attrs, type(attrs))
         if User.objects.filter(username = attrs['username'].lower()).exists():
             raise exceptions.ValidationError({
                 'message': 'Username is occupied.'

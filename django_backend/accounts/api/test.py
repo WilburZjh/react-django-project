@@ -107,7 +107,7 @@ class AccountAPITest(TestCase):
         self.assertEqual(response.status_code, 400)
 
         response = self.client.post(SIGNUP_URL, new_user)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
         self.assertEqual(response.data['User']['username'], 'someone')
 
         response = self.client.get(CHECK_STATUS_URL)
