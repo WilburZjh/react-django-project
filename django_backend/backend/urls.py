@@ -20,6 +20,7 @@ from django.views.generic import TemplateView
 from accounts.api.views import UserViewSet, AccountViewSet
 from tweets.api.views import TweetViewSet
 from friendships.api.views import FriendshipViewSet
+from newsfeeds.api.views import NewsFeedViewSet
 
 
 router = routers.DefaultRouter()
@@ -27,6 +28,7 @@ router.register('api/users', UserViewSet)
 router.register('api/accounts', AccountViewSet, basename='accounts')
 router.register('api/tweets', TweetViewSet, basename='tweets')
 router.register('api/friendships', FriendshipViewSet, basename='friendships')
+router.register('api/newsfeeds', NewsFeedViewSet, basename='newsfeeds')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

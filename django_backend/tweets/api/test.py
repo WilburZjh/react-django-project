@@ -1,6 +1,6 @@
 from rest_framework.test import APIClient
 from testing.testcases import TestCase
-from tweets.model import Tweet
+from tweets.models import Tweet
 
 TWEET_LIST_URL = '/api/tweets/'
 TWEET_CREATE_URL = '/api/tweets/'
@@ -14,7 +14,7 @@ class TweetTestCase(TestCase):
 
         self.tweet1 = [
             self.create_tweet(
-                self.user1
+                user = self.user1,
             )
             for _ in range(3)
         ]
@@ -36,12 +36,10 @@ class TweetTestCase(TestCase):
 
         response = self.anonymous_client.get(TWEET_LIST_URL, {'user_id': self.user1.id})
         self.assertEqual(response.status_code, 200)
-        print(response.data)
         self.assertEqual(len(response.data['Tweets']), 3)
 
         response = self.anonymous_client.get(path=TWEET_LIST_URL, data={'user_id': self.user2.id})
         self.assertEqual(response.status_code, 200)
-        print(response.data)
         self.assertEqual(len(response.data['Tweets']), 2)
 
         self.assertEqual(response.data['Tweets'][0]['id'], self.tweet2[1].id)
@@ -69,6 +67,7 @@ class TweetTestCase(TestCase):
             'content': 'Hello World, this is my first tweet!'
         })
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(response.data['user']['id'], self.user1.id)
+        print(response.data)
+        self.assertEqual(response.data['Content']['user']['id'], self.user1.id)
         self.assertEqual(Tweet.objects.count(), tweets_count + 1)
 

@@ -60,6 +60,7 @@ class AccountViewSet(viewsets.ViewSet):
 
     @action(methods=['POST'], detail=False)
     def signup(self, request):
+        print(request.data)
         serializer = SignupSerializer(data=request.data)
         if not serializer.is_valid():
             return Response({
@@ -74,7 +75,7 @@ class AccountViewSet(viewsets.ViewSet):
             "Success": True,
             "Message": "You have successfully signed up.",
             "User": UserSerializer(user).data,
-        }, 200)
+        }, 201)
 
     @action(methods=['POST'], detail=False)
     def logout(self, request):
