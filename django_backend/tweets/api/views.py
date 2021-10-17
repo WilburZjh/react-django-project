@@ -36,7 +36,7 @@ class TweetViewSet(viewsets.GenericViewSet):
                 "Message": "Please check the content.",
                 "Errors": serializer.errors,
             }, 400)
-        tweet = serializer.save()
+        tweet = serializer.save() # <class 'tweets.models.Tweet'>
         NewsFeedServices.fanout_to_followers(tweet)
         return Response({
             "Success": True,
