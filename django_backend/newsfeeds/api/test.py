@@ -38,17 +38,32 @@ class NewsFeedApiTests(TestCase):
         # 一开始啥都没有
         response = self.test1_client.get(NEWSFEEDS_URL)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.data['newsfeeds']), 0)
+        self.assertEqual(len(response.data['Newsfeeds']), 0)
         # 自己发的信息是可以看到的
         self.test1_client.post(POST_TWEETS_URL, {'content': 'Hello World'})
-        response = self.linghu_client.get(NEWSFEEDS_URL)
-        self.assertEqual(len(response.data['newsfeeds']), 1)
+        response = self.test1_client.get(NEWSFEEDS_URL)
+        self.assertEqual(len(response.data['Newsfeeds']), 1)
         # 关注之后可以看到别人发的
-        self.linghu_client.post(FOLLOW_URL.format(self.dongxie.id))
-        response = self.dongxie_client.post(POST_TWEETS_URL, {
+        self.test1_client.post(FOLLOW_URL.format(self.test2.id))
+        response = self.test2_client.post(POST_TWEETS_URL, {
             'content': 'Hello Twitter',
         })
-        posted_tweet_id = response.data['id']
-        response = self.linghu_client.get(NEWSFEEDS_URL)
-        self.assertEqual(len(response.data['newsfeeds']), 2)
-        self.assertEqual(response.data['newsfeeds'][0]['tweet']['id'], posted_tweet_id)
+        """
+        print(response.data) =>
+        {
+            'Success': True, 
+            'Content': {
+                    'id': 7, 
+                    'user': OrderedDict([
+                                ('id', 41), 
+                                ('username', 'test2')
+                                ]), 
+                    'created_at': '2021-10-18T01:03:43.802169Z', 
+                    'content': 'Hello Twitter'
+            }
+        }
+        """
+        posted_tweet_id = response.data['Content']['id']
+        response = self.test1_client.get(NEWSFEEDS_URL)
+        self.assertEqual(len(response.data['Newsfeeds']), 2)
+        self.assertEqual(response.data['Newsfeeds'][0]['tweet']['id'], posted_tweet_id)
