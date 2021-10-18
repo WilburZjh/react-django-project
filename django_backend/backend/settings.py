@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 SECRET_KEY = '=im(g_vnr9x-h6(_-88#=sa295)j!+3@g0w8#cia38ha38qqpw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS=['127.0.0.1','192.168.33.10','localhost']
 
@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 
     'corsheaders',
     'rest_framework',
+    'django_filters',
+    
     'accounts',
     'tweets',
     'friendships',
@@ -49,7 +51,10 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ],
 }
 
 MIDDLEWARE = [
@@ -147,3 +152,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'react_frontend/build/static'),
 ]
+
+try:
+    from .local_settings import *
+except:
+    pass
