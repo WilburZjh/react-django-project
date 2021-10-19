@@ -24,7 +24,7 @@ class CommentAPITest(TestCase):
         self.assertEqual(response.status_code, 403)
 
         response = self.test1_client.get(COMMENT_URL)
-        self.assertEqual(response.status_code, 405)
+        self.assertEqual(response.status_code, 400)
 
         # response = self.test1_client.post(COMMENT_URL)
         # self.assertEqual(response.status_code, 400)
