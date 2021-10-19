@@ -46,7 +46,7 @@ class SignupSerializer(serializers.Serializer):
 
         return user
 
-    # @verify_input
+    @verify_input
     def validate(self, attrs):
         print(attrs, type(attrs))
         if User.objects.filter(username = attrs['username'].lower()).exists():

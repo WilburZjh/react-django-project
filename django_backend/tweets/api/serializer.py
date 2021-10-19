@@ -1,8 +1,7 @@
-from django.contrib.auth.models import User
 from rest_framework import serializers
-from rest_framework.decorators import action
 from accounts.api.serializer import UserSerializerForTweet
 from tweets.models import Tweet
+from comments.api.serializers import CommentSerializer
 
 class TweetSerializer(serializers.ModelSerializer):
     user = UserSerializerForTweet() # used to deep check the user from tweet model. call serializer inside another serializer.
@@ -22,3 +21,12 @@ class TweetSerializerForCreate(serializers.ModelSerializer):
         content = validated_data['content']
         tweet = Tweet.objects.create(user=user, content=content)
         return tweet
+
+
+class TweetSerializerWithComments(serializers.ModelSerializer):
+    user = UserSerializerForTweet()
+    comments = CommentSerializer(source='comment_set', many=True)
+
+    class Meta:
+        model = Tweet
+        fields = ('id', 'user', 'comments', 'created_at', 'content')
