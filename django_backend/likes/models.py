@@ -8,7 +8,11 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 class Like(models.Model):
 
     object_id = models.PositiveIntegerField() # tweet_id or comment_id
-    content_type = models.ForeignKey(ContentType, on_delete=models.SET_NULL, null=True)
+    content_type = models.ForeignKey(
+        ContentType,
+        on_delete=models.SET_NULL,
+        null=True,
+    )
     content_object = GenericForeignKey('content_type', 'object_id')
 
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
@@ -19,6 +23,7 @@ class Like(models.Model):
             ('user', 'content_type', 'object_id'),
         )
 
+        # 按照时间排序某个被like的content_object的所有的list
         index_together = (
             ('content_type', 'object_id', 'created_at'),
         )
