@@ -42,7 +42,7 @@ class AccountAPITest(TestCase):
         self.assertEqual(response.status_code, 400)
 
         response = self.client.get(CHECK_STATUS_URL)
-        print(response)
+        # print(response)
         self.assertEqual(response.data['Has_logged_in'], False)
 
         response = self.client.post(LOGIN_URL, {

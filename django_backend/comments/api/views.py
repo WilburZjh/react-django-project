@@ -35,7 +35,11 @@ class CommentViewSet(viewsets.GenericViewSet):
         queryset=self.get_queryset()
         comments=self.filter_queryset(queryset).prefetch_related('user').order_by('created_at')
         return Response({
-            'Comment': CommentSerializer(comments, many=True).data,
+            'Comment': CommentSerializer(
+                comments,
+                context={'request':request},
+                many=True,
+            ).data,
         })
 
     def create(self, request):
@@ -90,7 +94,10 @@ class CommentViewSet(viewsets.GenericViewSet):
         """
         return Response({
             'Success': True,
-            'Comment': CommentSerializer(comment).data
+            'Comment': CommentSerializer(
+                comment,
+                context={'request': request},
+            ).data
         })
 
 
@@ -111,7 +118,10 @@ class CommentViewSet(viewsets.GenericViewSet):
         comment = serializer.save()
         return Response({
             'Success': True,
-            'Updated comment': CommentSerializer(comment).data
+            'Updated comment': CommentSerializer(
+                comment,
+                context={'request': request},
+            ).data
         }, 200)
 
 
