@@ -13,6 +13,7 @@ def verify_input(func):
         return func(instance, attrs, *args, **kwargs)
     return _wrapped_view
 
+
 def required_params(request_attrs='query_params', params=None):
 
     if params is None:
