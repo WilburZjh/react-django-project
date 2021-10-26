@@ -39,10 +39,10 @@ class FrienshipAPITest(TestCase):
 
         ts0 = response.data['Followers'][0]['created_at']
         ts1 = response.data['Followers'][1]['created_at']
-        print(ts0, ts1)
+        # print(ts0, ts1)
         self.assertEqual(ts0 > ts1, True)
 
-        print(response.data)
+        # print(response.data)
         self.assertEqual(response.data['Followers'][0]['user']['username'], 'test1_follower_1')
         self.assertEqual(response.data['Followers'][1]['user']['username'], 'test1_follower_0')
 

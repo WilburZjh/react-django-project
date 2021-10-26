@@ -4,6 +4,9 @@ from rest_framework.test import APIClient
 
 COMMENT_URL='/api/comments/'
 COMMENT_DETAIL_URL='/api/comments/{}/'
+TWEET_LIST_API = '/api/tweets/'
+TWEET_DETAIL_API = '/api/tweets/{}/'
+NEWSFEED_LIST_API = '/api/newsfeeds/'
 
 class CommentAPITest(TestCase):
 
@@ -85,3 +88,26 @@ class CommentAPITest(TestCase):
         response = self.test1_client.delete(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Comment.objects.count(), count - 1)
+
+    def test_comments_count(self):
+        # test tweet detail api
+        tweet = self.create_tweet(self.test1)
+        url = TWEET_DETAIL_API.format(tweet.id)
+        response = self.test2_client.get(url)
+        self.assertEqual(response.status_code, 200)
+        # print(response.data)
+        self.assertEqual(response.data['Tweet']['comments_count'], 0)
+
+        # test tweet list api
+        self.create_comment(self.test1, tweet)
+        response = self.test2_client.get(TWEET_LIST_API, {'user_id': self.test1.id})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['Tweets'][0]['comments_count'], 1)
+
+        # test newsfeeds list api
+        self.create_comment(self.test2, tweet)
+        self.create_newsfeed(self.test2, tweet)
+        response = self.test2_client.get(NEWSFEED_LIST_API)
+        self.assertEqual(response.status_code, 200)
+        # print(response.data)
+        self.assertEqual(response.data['Newsfeeds'][0]['tweet']['comments_count'], 2)

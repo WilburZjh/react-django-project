@@ -3,18 +3,30 @@ from accounts.api.serializer import UserSerializerForTweet
 from tweets.models import Tweet
 from comments.api.serializers import CommentSerializer
 from likes.services import LikeService
+from likes.api.serializers import LikeSerializer
+
+# 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
+# git remote set-url origin https://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@github.com/WilburZjh/react-django-project
 
 
 class TweetSerializer(serializers.ModelSerializer):
     user = UserSerializerForTweet() # used to deep check the user from tweet model. call serializer inside another serializer.
     has_liked = serializers.SerializerMethodField()
-    comment_count = serializers.SerializerMethodField()
+    comments_count = serializers.SerializerMethodField()
     likes_count = serializers.SerializerMethodField()
 
 
     class Meta:
         model = Tweet
-        fields = ('id', 'user', 'created_at', 'content')
+        fields = (
+            'id',
+            'user',
+            'created_at',
+            'content',
+            'comments_count',
+            'likes_count',
+            'has_liked',
+        )
 
     # 自定义的like_set。
     def get_likes_count(self, obj):
@@ -43,10 +55,20 @@ class TweetSerializerForCreate(serializers.ModelSerializer):
         return tweet
 
 
-class TweetSerializerWithComments(serializers.ModelSerializer):
-    user = UserSerializerForTweet()
+class TweetSerializerForDetail(TweetSerializer):
     comments = CommentSerializer(source='comment_set', many=True)
+    likes = LikeSerializer(source='like_set', many=True)
 
     class Meta:
         model = Tweet
-        fields = ('id', 'user', 'comments', 'created_at', 'content')
+        fields = (
+            'id',
+            'user',
+            'comments',
+            'created_at',
+            'content',
+            'likes',
+            'likes_count',
+            'comments_count',
+            'has_liked',
+        )

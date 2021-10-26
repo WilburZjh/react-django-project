@@ -66,7 +66,7 @@ class TweetTestCase(TestCase):
             'content': 'Hello World, this is my first tweet!'
         })
         self.assertEqual(response.status_code, 201)
-        print(response.data)
+        # print(response.data)
         self.assertEqual(response.data['Content']['user']['id'], self.user1.id)
         self.assertEqual(Tweet.objects.count(), tweets_count + 1)
 

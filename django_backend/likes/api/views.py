@@ -26,13 +26,13 @@ class LikeViewSet(viewsets.GenericViewSet):
                 'Success': False,
                 'Message': 'You can not create.',
                 'Error': serializer.errors,
-            })
+            }, 400)
 
         instance = serializer.save()
         return Response({
             'Success': True,
             'Like': LikeSerializer(instance).data,
-        })
+        }, 201)
 
 
     @action(methods=['POST'], detail=False)
@@ -47,7 +47,7 @@ class LikeViewSet(viewsets.GenericViewSet):
                 'Success': False,
                 'Message': 'You can not cancel.',
                 'Error': serializer.errors,
-            })
+            }, 400)
 
         deleted = serializer.cancel()
         return Response({

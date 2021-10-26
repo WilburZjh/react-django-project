@@ -64,7 +64,7 @@ class FriendshipViewSet(viewsets.GenericViewSet):
     @action(methods=['POST'], detail=True, permission_classes=[IsAuthenticated,])
     def unfollow(self, request, pk):
         unfollow_user = self.get_object() # pk
-        print(type(unfollow_user))
+        # print(type(unfollow_user))
         if request.user.id == unfollow_user.id:
             return Response({
                 'success': False,

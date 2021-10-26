@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from tweets.api.serializer import (
     TweetSerializer,
     TweetSerializerForCreate,
-    TweetSerializerWithComments,
+    TweetSerializerForDetail,
 )
 from rest_framework.response import Response
 from tweets.models import Tweet
@@ -32,12 +32,21 @@ class TweetViewSet(viewsets.GenericViewSet):
 
         user_id = request.query_params['user_id']
         queries = Tweet.objects.filter(user_id=user_id).order_by('-created_at')
-        return Response({'Tweets': TweetSerializer(queries, many=True).data}, 200)
+        return Response({
+            'Tweets': TweetSerializer(
+                queries,
+                context={'request':request},
+                many=True,
+            ).data
+        }, 200)
 
     def retrieve(self, request, *args, **kwargs):
         tweet = self.get_object()
         return Response({
-            'Tweet': TweetSerializerWithComments(tweet).data
+            'Tweet': TweetSerializerForDetail(
+                tweet,
+                context={'request': request},
+            ).data
         }, 200)
 
     def create(self, request):
@@ -55,5 +64,8 @@ class TweetViewSet(viewsets.GenericViewSet):
         NewsFeedServices.fanout_to_followers(tweet)
         return Response({
             "Success": True,
-            "Content": TweetSerializer(tweet).data,
+            "Content": TweetSerializer(
+                tweet,
+                context={'request': request},
+            ).data,
         }, 201)
