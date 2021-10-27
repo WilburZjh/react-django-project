@@ -9,6 +9,8 @@ from comments.api.serializers import (
     CommentSerializerForUpdate,
 )
 from utils.mydecorator import required_params
+from inbox.services import NotificationService
+
 
 class CommentViewSet(viewsets.GenericViewSet):
 
@@ -67,6 +69,7 @@ class CommentViewSet(viewsets.GenericViewSet):
             }, 400)
 
         comment = serializer.save()
+        NotificationService.send_comment_notification(comment)
         # print(CommentSerializer(comment))
         # print(CommentSerializer(comment).data)
         """
