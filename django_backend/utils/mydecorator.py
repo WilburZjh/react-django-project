@@ -14,7 +14,7 @@ def verify_input(func):
     return _wrapped_view
 
 
-def required_params(request_attrs='query_params', params=None):
+def required_params(method='GET', params=None):
 
     if params is None:
         params = []
@@ -22,7 +22,12 @@ def required_params(request_attrs='query_params', params=None):
     def decorator(view_func):
         @wraps(view_func)
         def _wrapped_func(instance, request, *args, **kwargs):
-            data = getattr(request, request_attrs)
+            if method.lower() == 'get':
+                data=request.query_params
+            else:
+                data=request.data
+
+            # data = getattr(request, request_attrs)
             missing_params = [
                 param
                 for param in params
