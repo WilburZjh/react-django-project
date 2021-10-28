@@ -5,9 +5,6 @@ from comments.api.serializers import CommentSerializer
 from likes.services import LikeService
 from likes.api.serializers import LikeSerializer
 
-# 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
-# git remote set-url origin https://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@github.com/WilburZjh/react-django-project
-
 
 class TweetSerializer(serializers.ModelSerializer):
     user = UserSerializerForTweet() # used to deep check the user from tweet model. call serializer inside another serializer.
