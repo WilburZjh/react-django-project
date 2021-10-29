@@ -49,7 +49,7 @@ class TweetViewSet(viewsets.GenericViewSet):
             ).data
         }, 200)
 
-    def create(self, request):
+    def create(self, request, *args, **kwargs):
         serializer = TweetSerializerForCreate(
             data=request.data,
             context={'request': request},

@@ -44,7 +44,7 @@ class TweetPhoto(models.Model):
         choices=TWEET_PHOTO_STATUS_CHOICES,
     )
 
-    has_deleted = models.BooleanField(default=True)
+    has_deleted = models.BooleanField(default=False)
     deleted_at = models.DateTimeField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
