@@ -20,6 +20,7 @@ class NotificationService(object):
                 recipient=target.user,
                 target=target,
             )
+
         if like.content_type == ContentType.objects.get_for_model(Comment):
             notify.send(
                 like.user,

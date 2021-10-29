@@ -87,3 +87,7 @@ class TweetTestCase(TestCase):
         response = self.anonymous_client.get(TWEET_RETRIEVE_URL.format(tweet.id))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data['Tweet']['comments']), 2)
+
+        profile = self.user1.profile
+        self.assertEqual(response.data['Tweet']['user']['nickname'], profile.nickname)
+        self.assertEqual(response.data['Tweet']['user']['avatar_url'], None)

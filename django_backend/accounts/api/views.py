@@ -1,19 +1,27 @@
+from accounts.models import UserProfile
 from django.contrib.auth.models import User
 from rest_framework import viewsets, permissions
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from accounts.api.serializer import UserSerializer, LoginSerializer, SignupSerializer
+from accounts.api.serializer import (
+    LoginSerializer,
+    SignupSerializer,
+    UserProfileSerializerForUpdate,
+    UserSerializer,
+    UserSerializerWithProfile,
+)
 from django.contrib.auth import (
     authenticate as django_authenticate,
     login as django_login,
     logout as django_logout,
 )
+from utils.permissions import IsObjectOwner
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = UserSerializerWithProfile
+    permission_classes = (permissions.IsAdminUser,)
 
 class AccountViewSet(viewsets.ViewSet):
     serializer_class = SignupSerializer
@@ -70,6 +78,9 @@ class AccountViewSet(viewsets.ViewSet):
             }, 400)
 
         user = serializer.save()
+
+        user.profile
+
         django_login(request, user)
         return Response({
             "Success": True,
@@ -89,3 +100,11 @@ class AccountViewSet(viewsets.ViewSet):
             "Logged out": False,
             "Message": "You need to log in before log out."
         }, 400)
+
+class UserProfileViewSet(
+    viewsets.GenericViewSet,
+    viewsets.mixins.UpdateModelMixin,
+):
+    queryset = UserProfile
+    permission_classes = (permissions.IsAuthenticated, IsObjectOwner)
+    serializer_class = UserProfileSerializerForUpdate

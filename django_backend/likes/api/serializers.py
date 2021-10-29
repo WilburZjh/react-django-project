@@ -1,13 +1,13 @@
 from rest_framework import serializers
 from rest_framework.serializers import ValidationError
 from likes.models import Like
-from accounts.api.serializer import UserSerializer
+from accounts.api.serializer import UserSerializerForLike
 from django.contrib.contenttypes.models import ContentType
 from tweets.models import Tweet
 from comments.models import Comment
 
 class LikeSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    user = UserSerializerForLike()
 
     class Meta:
         model=Like
